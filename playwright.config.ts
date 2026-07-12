@@ -1,0 +1,79 @@
+import { defineConfig, devices } from '@playwright/test';
+import * as path from 'path';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+/**
+ * See https://playwright.dev/docs/test-configuration.
+ */
+export default defineConfig({
+  testDir: './tests',
+  /* Run tests in files in parallel */
+  fullyParallel: true,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
+  forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
+  retries: process.env.CI ? 2 : 0,
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : undefined,
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  reporter: [['list'], ['html', { open: 'never' }]],
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  use: {
+    /* Base URL to use in actions like `await page.goto('/')`. */
+    baseURL: process.env.BASE_URL || 'https://www.ramoo.id',
+
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    
+    /* Maximize window */
+    viewport: null,
+    launchOptions: {
+      args: ['--start-maximized']
+    },
+  },
+
+  /* Configure projects for major browsers */
+  projects: [
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    },
+    {
+      name: 'critical-regression',
+      testDir: './tests/ui/critical-regression',
+      use: { 
+        browserName: 'chromium',
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'chromium',
+      use: { 
+        browserName: 'chromium',
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    }
+    // {
+    //   name: 'firefox',
+    //   use: { 
+    //     ...devices['Desktop Firefox'],
+    //     storageState: 'playwright/.auth/user.json',
+    //   },
+    //   dependencies: ['setup'],
+    // },
+    // {
+    //   name: 'webkit',
+    //   use: { 
+    //     ...devices['Desktop Safari'],
+    //     storageState: 'playwright/.auth/user.json',
+    //   },
+    //   dependencies: ['setup'],
+    // }
+  ],
+});

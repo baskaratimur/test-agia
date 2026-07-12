@@ -1,0 +1,24 @@
+# Node dependencies
+node_modules/
+
+# Playwright
+/playwright-report/
+/test-results/
+playwright/.cache/
+/playwright/.auth/
+
+# Environment variables
+.env
+.env.*
+
+# Python (jika nanti dieksekusi)
+__pycache__/
+*.pyc
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# File mentahan sementara yang digenerate manual (Opsional tapi direkomendasikan)
+*.txt
+*.xlsx

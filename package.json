@@ -1,0 +1,21 @@
+{
+  "name": "ramoo-findings-automation",
+  "version": "1.0.0",
+  "description": "Playwright automation for Ramoo Findings",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:smoke": "playwright test --grep @smoke"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@types/node": "^20.0.0",
+    "axios": "^1.7.2",
+    "dotenv": "^16.6.1",
+    "typescript": "^5.5.3"
+  }
+}
