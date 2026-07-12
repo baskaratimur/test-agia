@@ -3,6 +3,7 @@ import { PosDashboardPage } from '../../../src/pages/pos/pos-dashboard.page';
 import { PosSalesPage } from '../../../src/pages/pos/pos-sales.page';
 import { PosPaymentPage } from '../../../src/pages/pos/pos-payment.page';
 import { PosOrdersPage } from '../../../src/pages/pos/pos-orders.page';
+import { time } from 'console';
 
 // Menggunakan .serial agar test dijalankan berurutan (test 2 butuh hasil dari test 1)
 test.describe.serial('POS Critical Regression - End to End Transaction', () => {
@@ -41,15 +42,16 @@ test.describe.serial('POS Critical Regression - End to End Transaction', () => {
     
     await dashboardPage.openPOS();
     
-    const randomCustomerName = 'Customer ' + Math.floor(Math.random() * 10000);
-    await dashboardPage.registerCustomer(randomCustomerName, '08997775838');
+    const randomCustomerName = 'Customer Test' + Math.floor(Math.random() * 10000);
+    const randomPhoneNumber = '0899777' + Math.floor(Math.random() * 10000);
+    await dashboardPage.registerCustomer(randomCustomerName, randomPhoneNumber);
   });
 
   test('2. Proses Keranjang dan Lakukan Pembayaran', async () => {
     await salesPage.addProductByIndex(0);
     await salesPage.proceedToPayment();
 
-    const specialRequest = 'ga pake gula';
+    const specialRequest = 'jangan pedas';
     const randomTableNumber = Math.floor(Math.random() * (500 - 100 + 1) + 100).toString();
     await paymentPage.setTableNumberAndDetails(randomTableNumber, specialRequest);
     await paymentPage.payWithCash('5000000');
@@ -62,7 +64,7 @@ test.describe.serial('POS Critical Regression - End to End Transaction', () => {
     await ordersPage.openOrdersTab();
     
     await expect(page.getByRole('main')).toContainText('Active');
-    await expect(page.getByRole('main')).toContainText('ga pake gula');
+    await expect(page.getByRole('main')).toContainText('jangan pedas');
     
     await ordersPage.processOrderToReady();
     await expect(page.getByRole('main')).toContainText('Ready', { ignoreCase: true });

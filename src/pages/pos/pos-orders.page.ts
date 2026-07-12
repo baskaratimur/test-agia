@@ -35,16 +35,12 @@ export class PosOrdersPage {
   }
 
   async processOrderToCompleted() {
-    // using nth(1) or first based on rawlocator layout
-    await this.completeButton.first().click();
+    // Click the first complete button in the Ready tab
+    await this.page.locator("(//button[text()='Complete'])[1]").click();
   }
   
   async filterCompletedOrders() {
     await this.completedFilterButton.click();
   }
 
-  // Locators returned for assertions in spec
-  getMainContainer(): Locator {
-    return this.page.getByRole('main');
-  }
 }
